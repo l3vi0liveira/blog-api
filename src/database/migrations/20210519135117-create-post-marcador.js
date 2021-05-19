@@ -2,33 +2,34 @@
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.createTable("endereco", {
+    await queryInterface.createTable("post_marcador", {
       id: {
         type: Sequelize.INTEGER,
         autoIncrement: true,
         primaryKey: true,
       },
-      usuarioId: {
+      postId: {
         type: Sequelize.INTEGER,
         allowNull: false,
         references: {
           key: "id",
-          model: "usuario",
+          model: "post",
         },
       },
-      rua: Sequelize.STRING,
-      numero: Sequelize.NUMERIC,
-      complemento: Sequelize.STRING,
-      bairro: Sequelize.STRING,
-      cep: Sequelize.STRING,
-      cidade: Sequelize.STRING,
-      estado: Sequelize.STRING,
+      marcadorId: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        references: {
+          key: "id",
+          model: "marcador",
+        },
+      },
       createdAt: Sequelize.DATE,
       updatedAt: Sequelize.DATE,
     });
   },
 
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.dropTable("endereco");
+    await queryInterface.dropTable("post_marcador");
   },
 };

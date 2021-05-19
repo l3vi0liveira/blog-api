@@ -1,51 +1,34 @@
 const express = require("express");
 
-const controllerUsuario = require("../controller/usuario");
-const controllerProduto = require("../controller/produto");
-const controllerEndereco = require("../controller/endereco");
-const controllerPedido = require("../controller/pedido");
-const controllerFornecedor = require("../controller/fornecedor");
+const conttrolerAutor = require("../controller/autor");
+const conttrolerPost = require("../controller/post");
+const conttrolerComentario = require("../controller/comentario");
+const conttrolerMarcador = require("../controller/marcador");
 
 const router = express.Router();
 
-/*****USUARIO*****/
-router.get("/usuario", controllerUsuario.listar);
-router.post(
-  "/usuario",
-  controllerUsuario.validaUsuario,
-  controllerUsuario.criar
-);
-router.delete("/usuario/:id", controllerUsuario.deletar);
-router.delete("/usuario/", controllerUsuario.deletarErro);
-router.put("/usuario/:id", controllerUsuario.alterar);
-router.put("/usuario/", controllerUsuario.alterarErro);
+//********Autor***********
+router.post("/autor",conttrolerAutor.criar);
+router.put("/autor/:id", conttrolerAutor.alterar);
+router.delete("/autor/:id", conttrolerAutor.deletar);
+router.get("/autor", conttrolerAutor.listar);
 
-/*****PRODUTO****/
-router.post(
-  "/produto",
-  controllerProduto.validaProduto,
-  controllerProduto.criar
-);
-router.get("/produto", controllerProduto.listar);
-router.delete("/produto/:id", controllerProduto.deletar);
-router.put("/produto/:id", controllerProduto.alterar);
+// //********Post***********
+router.post("/post",conttrolerPost.criar);
+router.put("/post/:id", conttrolerPost.alterar);
+router.delete("/post/:id", conttrolerPost.deletar);
+router.get("/post", conttrolerPost.listar);
 
-/*****ENDEREÇO****/
-router.post("/endereco", controllerEndereco.criar);
-router.get("/endereco", controllerEndereco.listar);
-router.delete("/endereco/:id", controllerEndereco.deletar);
-router.put("/endereco/:id", controllerEndereco.alterar);
+// //********Comentario***********
+router.post("/comentario",conttrolerComentario.criar);
+router.put("/comentario/:id", conttrolerComentario.alterar);
+router.delete("/comentario/:id", conttrolerComentario.deletar);
+router.get("/comentario", conttrolerComentario.listar);
 
-/*****PEDIDO****/
-router.post("/pedido", controllerPedido.validaPedido, controllerPedido.criar);
-router.get("/pedido", controllerPedido.listar);
-router.delete("/pedido/:id", controllerPedido.deletar);
-router.put("/pedido/:id", controllerPedido.alterar);
-
-/*****FORNECEDOR****/
-router.post("/fornecedor", controllerFornecedor.criar);
-router.get("/fornecedor", controllerFornecedor.listar);
-router.delete("/fornecedor/:id", controllerFornecedor.deletar);
-router.put("/fornecedor/:id", controllerFornecedor.alterar);
+// //********Marcador***********
+router.post("/marcador",conttrolerMarcador.criar);
+router.put("/marcador/:id", conttrolerMarcador.alterar);
+router.delete("/marcador/:id", conttrolerMarcador.deletar);
+router.get("/marcador", conttrolerMarcador.listar);
 
 module.exports = router;

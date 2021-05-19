@@ -15,6 +15,6 @@ app.get("/", (req, res) => {
   res.send("welcome to server");
 });
 
-app.listen(3333, () => {
-  console.log("server online in port: 3333");
+app.listen(3312, () => {
+  console.log("server online in port: 3312");
 });

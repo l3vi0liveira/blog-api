@@ -1,6 +1,6 @@
 module.exports = (sequelize, DataTypes) => {
-  const Fornecedor = sequelize.define(
-    "Fornecedor",
+  const Autor = sequelize.define(
+    "Autor",
     {
       id: {
         type: DataTypes.INTEGER,
@@ -8,21 +8,22 @@ module.exports = (sequelize, DataTypes) => {
         primaryKey: true,
       },
       nome: DataTypes.STRING,
-      cnpj: DataTypes.STRING,
+      email: DataTypes.STRING,
+      senha: DataTypes.STRING,
       createdAt: DataTypes.DATE,
       updatedAt: DataTypes.DATE,
     },
     {
-      tableName: "fornecedor",
+      tableName: "autor",
     }
   );
 
-  Fornecedor.associate = (models) => {
-    Fornecedor.hasMany(models.Produto, {
-      foreignKey: "fornecedorId",
-      as: "produtos",
+  Autor.associate = (models) => {
+    Autor.hasMany(models.Post, {
+      foreignKey: "autorId",
+      as: "post",
     });
   };
 
-  return Fornecedor;
+  return Autor;
 };
