@@ -1,5 +1,6 @@
 const express = require("express");
-
+const multer = require("multer");
+const multerMiddleware = require("../middleware/multer")
 const conttrolerAutor = require("../controller/autor");
 const conttrolerPost = require("../controller/post");
 const conttrolerComentario = require("../controller/comentario");
@@ -14,7 +15,7 @@ router.delete("/autor/:id", conttrolerAutor.deletar);
 router.get("/autor", conttrolerAutor.listar);
 
 // //********Post***********
-router.post("/post",conttrolerPost.criar);
+router.post("/post",multer(multerMiddleware).single('file'),conttrolerPost.criar);
 router.put("/post/:id", conttrolerPost.alterar);
 router.delete("/post/:id", conttrolerPost.deletar);
 router.get("/post", conttrolerPost.listar);

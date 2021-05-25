@@ -12,7 +12,7 @@ module.exports = (sequelize, DataTypes) => {
       updatedAt: DataTypes.DATE,
     },
     {
-      tabela: "marcador",
+      tableName: "marcador",
     }
   );
   Marcador.associate = (models) => {
