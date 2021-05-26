@@ -9,10 +9,13 @@ exports.login = async (req, res) => {
   if (!receiveSenha && !receiveEmail) {
     res.json({ message: "Please, enter the required fields" });
   }
+  const hash = crypto.createHmac("sha512", salt);
+  hash.update(receiveSenha);
+  const value = hash.digest("hex");
   const amoutAutor = await tabelaAutor.count({
     where: {
       email: receiveEmail,
-      senha: receiveSenha,
+      senha: value,
     },
     attributes: { exclude: ["senha"] },
   });
