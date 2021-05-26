@@ -9,6 +9,7 @@ const conttrolerMarcador = require("../controller/marcador");
 const router = express.Router();
 
 //********Autor***********
+router.post("/autor/login",conttrolerAutor.login);
 router.post("/autor",conttrolerAutor.criar);
 router.put("/autor/:id", conttrolerAutor.alterar);
 router.delete("/autor/:id", conttrolerAutor.deletar);

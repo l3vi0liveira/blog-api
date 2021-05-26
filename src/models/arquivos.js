@@ -16,7 +16,7 @@ module.exports = (sequelize, DataTypes) => {
       url: {
         type: DataTypes.VIRTUAL,
         get() {
-          return  'http://localhost:3312/files/' + this.getDataValue('filename')
+          return "http://localhost:3312/files/" + this.getDataValue("filename");
         },
       },
       createdAt: DataTypes.DATE,

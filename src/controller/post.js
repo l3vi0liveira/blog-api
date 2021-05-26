@@ -9,7 +9,6 @@ exports.criar = async (req, res) => {
   const receiveMimeType = req.file.mimetype;
   const receiveFileName = req.file.filename;
   const receiveSize = req.file.size;
-  const receivePath = req.file.path;
   console.log(req.file)
   await tabelaArquivos.create({
     postId: receiveIdPost,
