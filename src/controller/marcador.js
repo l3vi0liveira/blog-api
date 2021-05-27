@@ -6,13 +6,17 @@ exports.criar = async (req, res) => {
   return res.json(marcador);
 };
 
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 exports.alterar = async (req, res) => {
   const recebeId = req.params.id;
   const { nome } = req.body;
-  await tabelaMarcador.uptate({ nome }, { where: { id: recebeId } });
+  await tabelaMarcador.update({ nome }, { where: { id: recebeId } });
   const marcadores = await tabelaMarcador.findByPk(recebeId);
   res.json(marcadores);
 };
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 exports.deletar = async (req, res) => {
   const recebeId = req.params.id;
@@ -20,7 +24,19 @@ exports.deletar = async (req, res) => {
   res.json({ message: "Marcador " + recebeId + " deletado com sucesso" });
 };
 
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 exports.listar = async (req, res) => {
   const marcador = await tabelaMarcador.findAll();
   return res.json(marcador);
+};
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+exports.alterarErr = async (req,res)=>{
+  return res.json("Please, enter an id");
+};
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+exports.deletarErr = async (req,res)=>{
+  return res.json("Please, enter an id");
 };
