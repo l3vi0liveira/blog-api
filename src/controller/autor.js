@@ -1,29 +1,28 @@
 const models = require("../models");
 const tabelaAutor = models.Autor;
 const crypto = require("crypto");
+const bcrypt = require('bcrypt');
 const salt = "r37y65tgh098juy676";
 
 exports.login = async (req, res) => {
   const receiveEmail = req.body.email;
   const receiveSenha = req.body.senha;
-  if (!receiveSenha && !receiveEmail) {
-    res.json({ message: "Please, enter the required fields" });
-  }
-  const hash = crypto.createHmac("sha512", salt);
-  hash.update(receiveSenha);
-  const value = hash.digest("hex");
-  const amoutAutor = await tabelaAutor.count({
-    where: {
-      email: receiveEmail,
-      senha: value,
-    },
-    attributes: { exclude: ["senha"] },
-  });
-  if (amoutAutor) {
-    return res.json({ message: "Login successfully" });
-  }
-  return res.json({ message: "Username or password is invalid" });
+  if(!receiveEmail && !receiveSenha){return res.json("Please enter email and / or password")}
+  const getEmail = await tabelaAutor.findOne({
+    where:{
+      email: receiveEmail
+    }
+  })
+  const getSenha = getEmail.senha;
+  console.log(getSenha)
+  console.log(receiveSenha)
+  
+  if(getEmail!=0){ return res.json("Login successfully")}
+  return res.json("Incorrect login and / or password")
 };
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 exports.criar = async (req, res) => {
   const email = req.body.email;
   const senha = req.body.senha;
@@ -31,11 +30,24 @@ exports.criar = async (req, res) => {
   const hash = crypto.createHmac("sha512", salt);
   hash.update(senha);
   const value = hash.digest("hex");
-  const autor = await tabelaAutor.create({
-    nome:nome, senha:value, email:email
+  const verifyEmail = await tabelaAutor.findAll({
+    where: {
+      email: email,
+    },
   });
-  return res.json(autor);
+  if (verifyEmail!=0) {
+    return res.json({ message: "E-mail already registered" });
+  } else {
+    const autor = await tabelaAutor.create({
+      nome: nome,
+      senha: value,
+      email: email,
+    });
+    return res.json(autor);
+  }
 };
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 exports.alterar = async (req, res) => {
   const recebeId = req.params.id;
@@ -45,11 +57,15 @@ exports.alterar = async (req, res) => {
   res.json(autores);
 };
 
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 exports.deletar = async (req, res) => {
   const recebeId = req.params.id;
   await tabelaAutor.destroy({ where: { id: recebeId } });
   res.json({ message: "Autor " + recebeId + " deletado com sucesso" });
 };
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 exports.listar = async (req, res) => {
   const autor = await tabelaAutor.findAll({

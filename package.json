@@ -10,6 +10,7 @@
   "license": "ISC",
   "dependencies": {
     "@multipart/form": "^2.0.0",
+    "bcrypt": "^5.0.1",
     "body-parser": "^1.19.0",
     "crypto": "^1.0.1",
     "crypto-js": "^4.0.0",
