@@ -6,24 +6,19 @@ const tabelaAutor = models.Autor;
 exports.criar = async (req, res) => {
   const receiveAutorId = req.body.autorId;
   const validAutorId = await tabelaAutor.findByPk(receiveAutorId);
-  if (validAutorId) {
-    const post = await tabelaPost.create(req.body);
-    const receiveIdPost = post.id;
-    const receiveOriginalName = req.file.originalname;
-    const receiveMimeType = req.file.mimetype;
-    const receiveFileName = req.file.filename;
-    const receiveSize = req.file.size;
-    console.log(req.file);
+
+  if (!validAutorId) return res.json({ mesasge: "Author not found" });
+
+  const post = await tabelaPost.create(req.body);
+  const receiveIdPost = post.id;
+
+  if (req.file) {
     await tabelaArquivos.create({
       postId: receiveIdPost,
-      originalname: receiveOriginalName,
-      mimetype: receiveMimeType,
-      filename: receiveFileName,
-      size: receiveSize,
+      ...req.file,
     });
-    return res.json(post);
   }
-  return res.json("Please, write a valid autorId");
+  return res.json(post);
 };
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

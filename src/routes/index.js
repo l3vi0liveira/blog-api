@@ -1,29 +1,25 @@
 const express = require("express");
 const multer = require("multer");
 const multerMiddleware = require("../middleware/multer")
-const conttrolerAutor = require("../controller/autor");
+
 const conttrolerPost = require("../controller/post");
 const conttrolerComentario = require("../controller/comentario");
 const conttrolerMarcador = require("../controller/marcador");
+const middlewareVerify = require("../middleware/token");
+
+const authorRoutes = require('./author')
 
 const router = express.Router();
 
-//********Autor***********
-router.post("/autor/login",conttrolerAutor.login);
-router.post("/autor",conttrolerAutor.criar);
-router.put("/autor/:id", conttrolerAutor.alterar);
-router.delete("/autor/:id", conttrolerAutor.deletar);
-router.put("/autor/", conttrolerAutor.alterarErr);
-router.delete("/autor/", conttrolerAutor.deletarErr);
-router.get("/autor", conttrolerAutor.listar);
+router.use(authorRoutes)
 
 // //********Post***********
-router.post("/post",multer(multerMiddleware).single('file'),conttrolerPost.criar);
-router.put("/post/:id", conttrolerPost.alterar);
-router.put("/post/", conttrolerPost.alterarErr);
-router.delete("/post/:id", conttrolerPost.deletar);
-router.delete("/post/", conttrolerPost.deletarErr);
-router.get("/post", conttrolerPost.listar);
+router.post("/post",middlewareVerify.verifyToken,multer(multerMiddleware).single('file'),conttrolerPost.criar);
+router.put("/post/:id",middlewareVerify.verifyToken, conttrolerPost.alterar);
+router.put("/post/",middlewareVerify.verifyToken, conttrolerPost.alterarErr);
+router.delete("/post/:id",middlewareVerify.verifyToken, conttrolerPost.deletar);
+router.delete("/post/",middlewareVerify.verifyToken, conttrolerPost.deletarErr);
+router.get("/post",middlewareVerify.verifyToken, conttrolerPost.listar);
 
 // //********Comentario***********
 router.post("/comentario",conttrolerComentario.criar);
