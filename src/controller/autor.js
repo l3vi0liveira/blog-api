@@ -15,16 +15,16 @@ exports.login = async (req, res) => {
   }
 
   const autor = await tabelaAutor.findOne({
-    where:{
-      email
-    }
-  })
+    where: {
+      email,
+    },
+  });
 
   if (!autor || !compare(autor.senha, req.body.senha)) {
-    return res.json({ message: 'user not found' })
+    return res.json({ message: "user not found" });
   }
 
-  token = jwt.sign({ id: autor.id }, process.env.SECRET, { expiresIn: 300 });
+  token = jwt.sign({ id: autor.id }, process.env.SECRET, { expiresIn: 3000 });
 
   return res.json({ message: "Successfully logged:", token });
 };
@@ -42,11 +42,11 @@ exports.criar = async (req, res) => {
     return res.json({ message: "E-mail already registered" });
   }
 
-  const senhaComHash = createHash(req.body.senha)
+  const senhaComHash = createHash(req.body.senha);
 
   const autor = await tabelaAutor.create({
-   ...req.body,
-   senha: senhaComHash
+    ...req.body,
+    senha: senhaComHash,
   });
 
   return res.json(autor);
@@ -72,14 +72,19 @@ exports.alterar = async (req, res) => {
     await tabelaAutor.update(req.body, { where: { id: receiveId } });
     res.json(receiveAltera);
   }
-  res.json("Please, use a valid id ");
+  res.json({message:"Please, use a valid id "});
 };
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 exports.deletar = async (req, res) => {
-  const recebeId = req.params.id;
-  await tabelaAutor.destroy({ where: { id: recebeId } });
-  res.json({ message: "Autor " + recebeId + " deletado com sucesso" });
+  const receiveId = req.params.id;
+
+  const receiveAltera = await tabelaAutor.findByPk(receiveId);
+  if (receiveAltera) {
+    await tabelaAutor.destroy({ where: { id: receiveId } });
+    res.json({ message: "Author successfully deleted" });
+  }
+  res.json({message:"Please, use a valid id "});
 };
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
